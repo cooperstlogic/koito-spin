@@ -1,3 +1,44 @@
+> [!NOTE]
+> **This is a fork of [Koito](https://github.com/gabehf/koito)**, maintained for [spin](https://spin.logicshop.press), a self-hosted listening history site. The original README follows below the line.
+
+# koito-spin
+
+## Why fork
+
+Koito is a very good scrobbler and listening-stats site, but upstream has been quiet: no commits since 2026-07-23, and pull requests waiting without review. spin needed a few changes Koito doesn't support: its own name and icons, a home page that keeps now playing current, and a full-screen now playing page. Working around those from outside (rewriting Koito's pages through a proxy) would have kept getting more complicated, so this fork makes the changes in the code instead.
+
+## What's different from Koito v0.3.2
+
+- **Rebrandable at build time.** `SITE_TITLE`, `SOURCE_URL` and `BRANDING` build args set the name in titles and the web app manifest, the footer and About credit ("*name* · a fork of Koito"), the source links, and the icons. With none set, the build is plain Koito, byte for byte. See [`branding/README.md`](branding/README.md).
+- **Now playing stays current.** The home page polls now playing every 15 s and recent listens every 30 s (paused while the tab is hidden), instead of only on page load.
+- **`/now` page.** A full-screen now playing view for a phone or a spare screen: cover art with a record that spins while something plays, "last played" when idle, and a screen wake lock. It's linked from the sidebar and from the now playing row.
+- **Smaller fixes.** The update check compares against the base version, so a fork build like `v0.3.2-spin.3` isn't flagged as older than upstream's `v0.3.2`; sidebar labels no longer wrap.
+- **spin's branding** lives in [`branding/spin/`](branding/spin/) and is only used when built with `BRANDING=spin`.
+
+**What hasn't changed:** the database schema, the API, importing, relaying and configuration. Data from this fork works with upstream Koito v0.3.2 and the other way round, so you can switch in either direction.
+
+## What's changing
+
+- **Staying close to upstream.** `main` tracks upstream Koito; this fork's work is on `spin`, the default branch. If upstream becomes active again, its changes get merged in.
+- **Offering changes upstream.** The changes are small, separate commits so the generic ones (the title setting, polling, the update check) can be offered back to Koito.
+- **Dependency updates.** The dependencies inherited from v0.3.2 have known vulnerabilities; updating them is next.
+- **No database changes.** That rule keeps the fork interchangeable with upstream.
+
+## Using it
+
+There's no published image; build your own:
+
+```bash
+git clone https://github.com/cooperstlogic/koito-spin && cd koito-spin
+docker build --build-arg SITE_TITLE=yourname --build-arg BRANDING=yourname -t koito-yourname .
+```
+
+Run it exactly like Koito (same environment variables, port and data directory); see the original instructions below and [koito.io](https://koito.io). Branding is documented in [`branding/README.md`](branding/README.md). Leave out the build args for plain Koito with this fork's features.
+
+Issues with this fork's changes belong here; anything else about Koito belongs [upstream](https://github.com/gabehf/koito/issues). Koito is by [Gabe Farrell](https://github.com/gabehf) under the [MIT license](LICENSE); this fork keeps that license.
+
+---
+
 <div align="center">
   
 ![Koito logo](https://github.com/user-attachments/assets/bd69a050-b40f-4da7-8ff1-4607554bfd6d)
