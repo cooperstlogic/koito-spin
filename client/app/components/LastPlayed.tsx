@@ -46,10 +46,13 @@ export default function LastPlays(props: Props) {
   const { isPending, isError, data, error } = useQuery({
     queryKey: ["last-listens", args],
     queryFn: () => getLastListens(args),
+    // keep the list current while the page is open (paused when the tab is hidden)
+    refetchInterval: 30_000,
   });
   const { data: npData } = useQuery({
     queryKey: ["now-playing"],
     queryFn: () => getNowPlaying(),
+    refetchInterval: 15_000,
   });
 
   const header = "Last played";
