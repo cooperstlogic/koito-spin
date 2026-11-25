@@ -1,0 +1,42 @@
+# Dependabot for the koito-spin fork.
+#
+# This fork follows upstream (gabehf/Koito) for routine dependency bumps, so version
+# updates are off (open-pull-requests-limit: 0). Security updates stay on, grouped so each
+# directory gets at most one security PR at a time instead of one per package.
+#
+# /docs is upstream's docs site. This fork never builds or publishes it (astro.yml is
+# disabled), so its alerts are dismissed as "not used" rather than fixed here.
+version: 2
+updates:
+  - package-ecosystem: gomod
+    directory: /
+    target-branch: spin
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    groups:
+      go-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: npm
+    directory: /client
+    target-branch: spin
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    groups:
+      client-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: npm
+    directory: /docs
+    target-branch: spin
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 0
+    groups:
+      docs-security:
+        applies-to: security-updates
+        patterns: ["*"]
