@@ -3,6 +3,7 @@ import ArtistLinks from "./ArtistLinks";
 import Image from "./primitives/Image";
 import { type Listen, type NowPlaying } from "api/api";
 import { Link } from "react-router";
+import { Maximize2 } from "lucide-react";
 import { timeSince } from "~/utils/utils";
 import { useAppContext } from "~/providers/AppProvider";
 
@@ -58,10 +59,15 @@ export default function ListensTable({
               </div>
             </td>
             <td className={timeColClasses}>
-              <div className="flex items-center justify-end gap-2 text-end">
+              <Link
+                to="/now"
+                title="Open the full-screen now playing view"
+                className="flex items-center justify-end gap-2 text-end hover:text-(--color-fg)"
+              >
                 <div className="h-1.5 w-1.5 rounded-full bg-(--color-primary)" />
                 {"Now Playing"}
-              </div>
+                <Maximize2 size={12} aria-hidden />
+              </Link>
             </td>
           </tr>
         )}

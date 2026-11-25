@@ -1,4 +1,4 @@
-import { ExternalLink, History, Home, Info } from "lucide-react";
+import { Disc3, ExternalLink, History, Home, Info } from "lucide-react";
 import SidebarSearch from "./SidebarSearch";
 import SidebarItem from "./SidebarItem";
 import SidebarSettings from "./SidebarSettings";
@@ -53,6 +53,15 @@ export default function Sidebar() {
           modal={<></>}
         >
           <History size={iconSize} />
+        </SidebarItem>
+        <SidebarItem
+          space={10}
+          to="/now"
+          name="Now playing"
+          onClick={() => {}}
+          modal={<></>}
+        >
+          <Disc3 size={iconSize} />
         </SidebarItem>
       </div>
       <div className="flex gap-4 sm:flex-col">
