@@ -88,7 +88,7 @@ export default function NowPlaying() {
 
       <div className="np-layout flex flex-col items-center gap-10 w-full max-w-6xl">
         <div className={`np-cover ${playing ? "is-playing" : ""} ${hasArt ? "" : "no-art"}`}>
-          <img className="np-record" src="/favicon.svg" alt="" aria-hidden />
+          <img className="np-record" src="/record.svg" alt="" aria-hidden />
           {hasArt && (
             <img className="np-art" src={art} alt={album?.title ?? track?.title ?? ""} />
           )}
