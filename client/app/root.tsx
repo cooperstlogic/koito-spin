@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLocation,
   useRouteError,
 } from "react-router";
 
@@ -85,18 +86,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  // the standalone now playing page has no sidebar or footer
+  const bare = useLocation().pathname === "/now";
   return (
     <>
       <AppProvider>
         <ThemeProvider>
           <QueryClientProvider client={queryClient}>
-            <div className="flex-col flex sm:flex-row">
-              <Sidebar />
-              <div className="flex flex-col items-center mx-auto w-full ml-0 sm:ml-[58px]">
-                <Outlet />
-                <Footer />
+            {bare ? (
+              <Outlet />
+            ) : (
+              <div className="flex-col flex sm:flex-row">
+                <Sidebar />
+                <div className="flex flex-col items-center mx-auto w-full ml-0 sm:ml-[58px]">
+                  <Outlet />
+                  <Footer />
+                </div>
               </div>
-            </div>
+            )}
           </QueryClientProvider>
         </ThemeProvider>
       </AppProvider>
