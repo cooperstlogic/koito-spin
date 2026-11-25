@@ -1,4 +1,5 @@
-// Branding for forks. Both are set at build time (Docker build args SITE_TITLE and SOURCE_URL).
+// Branding for rebranded builds, set at build time (Docker build args SITE_TITLE and SOURCE_URL).
+// Icons come from the BRANDING build arg; see branding/README.md.
 export const upstreamUrl = "https://github.com/gabehf/koito";
 
 // Name shown in page titles, the footer and the About box.
