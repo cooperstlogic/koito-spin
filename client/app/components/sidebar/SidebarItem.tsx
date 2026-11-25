@@ -41,7 +41,7 @@ export default function SidebarItem({
       )}
     </div>
   ) : (
-    name
+    <span className="whitespace-nowrap">{name}</span>
   );
 
   return (
