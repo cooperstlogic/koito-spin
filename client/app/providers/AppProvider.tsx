@@ -4,7 +4,10 @@ import pkg from "../../package.json";
 import semver from "semver";
 
 function isNewerVersion(current: string, latest: string): boolean {
-  return semver.gt(latest, current);
+  // compare against the base version, so a fork build like v0.3.2-spin.1
+  // isn't reported as older than upstream's v0.3.2
+  const base = semver.coerce(current) ?? current;
+  return semver.gt(latest, base);
 }
 
 interface AppContextType {
