@@ -13,6 +13,7 @@ import MbzIcon from "~/components/icons/MbzIcon";
 import { timeListenedString } from "~/utils/utils";
 import { Link } from "react-router";
 import useWindowWidth from "~/hooks/useWindowWidth";
+import { siteTitle } from "~/branding";
 
 export type MergeFunc = (
   from: number,
@@ -60,7 +61,7 @@ export default function MediaLayout(props: Props) {
     window.location.reload();
   };
 
-  const title = `${props.title} - Koito`;
+  const title = `${props.title} - ${siteTitle}`;
 
   const mobileIconSize = 22;
   const normalIconSize = 30;

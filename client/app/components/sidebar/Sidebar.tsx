@@ -2,6 +2,7 @@ import { ExternalLink, History, Home, Info } from "lucide-react";
 import SidebarSearch from "./SidebarSearch";
 import SidebarItem from "./SidebarItem";
 import SidebarSettings from "./SidebarSettings";
+import { isFork, sourceUrl } from "~/branding";
 
 export default function Sidebar() {
   const iconSize = 18;
@@ -60,7 +61,7 @@ export default function Sidebar() {
           keyHint={<ExternalLink size={14} />}
           space={22}
           externalLink
-          to="https://koito.io"
+          to={isFork ? sourceUrl : "https://koito.io"}
           name="About"
           onClick={() => {}}
           modal={<></>}

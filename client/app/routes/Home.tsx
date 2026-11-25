@@ -9,9 +9,10 @@ import PeriodSelector from "~/components/PeriodSelector";
 import { useAppContext } from "~/providers/AppProvider";
 import TopAlbumsCard from "~/components/TopAlbumsCard";
 import PinnedItemGrid from "~/components/PinnedItemGrid";
+import { siteTitle } from "~/branding";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Koito" }, { name: "description", content: "Koito" }];
+  return [{ title: siteTitle }, { name: "description", content: siteTitle }];
 }
 
 export default function Home() {

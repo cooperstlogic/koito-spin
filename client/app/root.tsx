@@ -17,6 +17,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import Footer from "./components/Footer";
 import { AppProvider } from "./providers/AppProvider";
 import { initTimezoneCookie } from "./tz";
+import { siteTitle } from "~/branding";
 
 initTimezoneCookie();
 
@@ -69,7 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           sizes="180x180"
           href="/apple-touch-icon.png"
         />
-        <meta name="apple-mobile-web-app-title" content="Koito" />
+        <meta name="apple-mobile-web-app-title" content={siteTitle} />
         <link rel="manifest" href="/site.webmanifest" />
         <Meta />
         <Links />
@@ -124,7 +125,7 @@ export function ErrorBoundary() {
     stack = error.stack;
   }
 
-  const title = `${message} - Koito`;
+  const title = `${message} - ${siteTitle}`;
 
   return (
     <AppProvider>

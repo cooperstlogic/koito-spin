@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAppContext } from "~/providers/AppProvider";
 import { ExternalLink } from "lucide-react";
 import { Link } from "react-router";
+import { isFork, siteTitle, sourceUrl } from "~/branding";
 
 type VersionInfo = {
   html_url: string;
@@ -28,14 +29,21 @@ export default function About() {
         <div className="inline-flex items-center">
           <img
             src="/web-app-manifest-192x192.png"
-            alt="koito logo"
+            alt={`${siteTitle} logo`}
             style={{ width: 70 }}
           />
-          <h5 className="text-6xl font-semibold">Koito</h5>
+          <h5 className="text-6xl font-semibold">{siteTitle}</h5>
         </div>
         <div className="px-2 py-1 rounded-sm bg-secondary">
-          Koito {currentVersion}
+          {isFork ? "a fork of Koito" : "Koito"} {currentVersion}
         </div>
+        {isFork && (
+          <Link className="text-sm link-underline" to={sourceUrl} target="_blank">
+            <span className="inline-flex items-center gap-1">
+              View the source on GitHub <ExternalLink size={14} />
+            </span>
+          </Link>
+        )}
         {updateAvailable && latestVersionInfo && (
           <Link
             className="text-(--color-info) text-sm mt-1 hover:cursor-pointer"
@@ -43,7 +51,7 @@ export default function About() {
             target="_blank"
           >
             <span className="inline-flex items-center gap-1">
-              🛈 Update available - click to view release
+              🛈 {isFork ? "Koito update available" : "Update available"} - click to view release
               <ExternalLink size={14} />
             </span>
           </Link>

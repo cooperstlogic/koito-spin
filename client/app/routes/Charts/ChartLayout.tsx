@@ -4,6 +4,7 @@ import { average } from "color.js";
 import { type PaginatedResponse } from "api/api";
 import PeriodSelector from "~/components/PeriodSelector";
 import { useAppContext } from "~/providers/AppProvider";
+import { siteTitle } from "~/branding";
 
 interface ChartLayoutProps<T> {
   title: "Top Albums" | "Top Tracks" | "Top Artists" | "Last Played";
@@ -23,7 +24,7 @@ export default function ChartLayout<T>({
   endpoint,
   render,
 }: ChartLayoutProps<T>) {
-  const pgTitle = `${title} - Koito`;
+  const pgTitle = `${title} - ${siteTitle}`;
 
   const fetcher = useFetcher();
   const location = useLocation();
