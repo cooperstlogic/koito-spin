@@ -1,0 +1,70 @@
+# CI for this fork's `spin` branch. Upstream's workflows (test.yml, docker.yml, astro.yml)
+# target upstream's `main`; docker.yml and astro.yml are disabled in this repo's settings
+# because they publish Koito's image and docs site.
+name: spin CI
+
+on:
+  push:
+    branches: [spin]
+  pull_request:
+    branches: [spin]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spin-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  go-test:
+    name: Go build and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0
+        with:
+          go-version-file: go.mod
+      - name: Install libvips
+        run: sudo apt-get update && sudo apt-get install -y libvips-dev
+      - run: go build ./...
+      - run: go test ./...
+
+  docker-build:
+    name: Docker image builds (default and spin branding)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # A build with no build args must stay plain Koito; the spin build exercises BRANDING.
+      - name: Build without branding
+        run: docker build -t koito-ci-default .
+      - name: Build with spin branding
+        run: >
+          docker build -t koito-ci-spin
+          --build-arg SITE_TITLE=spin
+          --build-arg SOURCE_URL=https://github.com/${{ github.repository }}
+          --build-arg BRANDING=spin
+          .
+      - name: Check served icons and manifest
+        run: |
+          set -eu
+          for tag in default spin; do
+            docker run -d --name "ci-$tag" -e KOITO_DEFAULT_USERNAME=ci -e KOITO_DEFAULT_PASSWORD=ci-only-password \
+              -e KOITO_DISABLE_MUSICBRAINZ=true -p "0:4110" "koito-ci-$tag" >/dev/null
+          done
+          sleep 10
+          port() { docker port "ci-$1" 4110/tcp | head -1 | sed 's/.*://'; }
+          d=$(port default); s=$(port spin)
+          name() { curl -fsS "http://127.0.0.1:$1/site.webmanifest" | python3 -c 'import json,sys; print(json.load(sys.stdin)["name"])'; }
+          test "$(name "$d")" = "Koito"
+          test "$(name "$s")" = "spin"
+          cmp <(curl -fsS "http://127.0.0.1:$d/favicon.svg") client/public/favicon.svg
+          cmp <(curl -fsS "http://127.0.0.1:$s/favicon.svg") branding/spin/public/favicon.svg
+          curl -fsS "http://127.0.0.1:$s/record.svg" >/dev/null
+          curl -fsS "http://127.0.0.1:$s/now" >/dev/null
+          echo "branding checks passed"
